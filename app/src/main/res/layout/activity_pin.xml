@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="be.maartenvg.smartalarm.activities.PINActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:orientation="vertical"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:id="@+id/PinScreenTitle"
+            style="@style/Base.DialogWindowTitle.AppCompat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Disable alarm" />
+
+        <TextView
+            android:id="@+id/PinScreenDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/PinScreenTitle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="@string/enter_pin_below" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical"
+            android:stretchColumns="*"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="32dp">
+
+            <TableRow>
+
+                <EditText
+                    android:id="@+id/edit_pin"
+                    android:layout_column="1"
+                    android:layout_marginBottom="16dp"
+                    android:focusable="false"
+                    android:inputType="numberPassword"
+                    android:textAlignment="center"/>
+
+                <ImageView
+                    android:id="@+id/btnBackspace"
+                    style="@style/PinButton"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_backspace" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/btn1"
+                    style="@style/PinButton"
+                    android:layout_height="74dp"
+                    android:clickable="true"
+                    android:text="1" />
+
+                <TextView
+                    android:id="@+id/btn2"
+                    style="@style/PinButton"
+                    android:layout_height="74dp"
+                    android:clickable="true"
+                    android:text="2" />
+
+                <TextView
+                    android:id="@+id/btn3"
+                    style="@style/PinButton"
+                    android:layout_height="74dp"
+                    android:clickable="true"
+                    android:text="3" />
+            </TableRow>
+
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/btn4"
+                    style="@style/PinButton"
+                    android:layout_height="74dp"
+                    android:clickable="true"
+                    android:text="4" />
+
+                <TextView
+                    android:id="@+id/btn5"
+                    style="@style/PinButton"
+                    android:layout_height="74dp"
+                    android:clickable="true"
+                    android:text="5" />
+
+                <TextView
+                    android:id="@+id/btn6"
+                    style="@style/PinButton"
+                    android:layout_height="74dp"
+                    android:clickable="true"
+                    android:text="6" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/btn7"
+                    style="@style/PinButton"
+                    android:layout_height="74dp"
+                    android:clickable="true"
+                    android:text="7" />
+
+                <TextView
+                    android:id="@+id/btn8"
+                    style="@style/PinButton"
+                    android:layout_height="74dp"
+                    android:clickable="true"
+                    android:text="8" />
+
+                <TextView
+                    android:id="@+id/btn9"
+                    style="@style/PinButton"
+                    android:layout_height="74dp"
+                    android:clickable="true"
+                    android:text="9" />
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:id="@+id/btn0"
+                    style="@style/PinButton"
+                    android:layout_height="74dp"
+                    android:layout_column="1"
+                    android:clickable="true"
+                    android:text="0" />
+
+                <ImageView
+                    android:id="@+id/btnPinOK"
+                    style="@style/PinButton"
+                    android:layout_width="0dp"
+                    android:layout_height="74dp"
+                    android:clickable="true"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_check" />
+            </TableRow>
+        </TableLayout>
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">SmartAlarm</string>
     <string name="action_settings">Settings</string>
+    <string name="armed">Armed</string>
+    <string name="sensors_ok">All sensors OK</string>
+    <string name="disable_alarm">Disarm alarm</string>
+    <string name="disarmed">Disarmed</string>
+    <string name="enable_alarm">Arm alarm</string>
+    <string name="intrusion_alert">Intrusion alert</string>
+    <string name="countdown_initiated">Motion detected: countdown initiated</string>
+    <string name="sirens_active">Alarm sirens active</string>
+    <string name="menu">Menu</string>
+    <string name="alarm_being_setup">Alarm is currently being set up</string>
+    <string name="nineoneone">Call 911</string>
+    <string name="sensor_overview">Sensor overview</string>
+    <string name="title_activity_pin">PINActivity</string>
+    <string name="enter_pin_below">Please enter your PIN code below</string>
 </resources>

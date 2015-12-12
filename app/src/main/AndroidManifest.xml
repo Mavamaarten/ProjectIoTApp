@@ -12,22 +12,23 @@
     <permission
         android:name="be.maartenvg.smartalarm.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="be.maartenvg.smartalarm.permission.C2D_MESSAGE" />
 
     <application
-        android:name="be.maartenvg.smartalarm.SmartAlarmApplication"
+        android:name=".SmartAlarmApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="be.maartenvg.smartalarm.SHOW_TOAST" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -36,7 +37,7 @@
         <service android:name="com.parse.PushService" />
 
         <receiver
-            android:name="com.parse.ParsePushBroadcastReceiver"
+            android:name=".push.PushBroadCastReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
@@ -54,6 +55,16 @@
                 <category android:name="be.maartenvg.smartalarm" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".activities.PINActivity"
+            android:label="@string/title_activity_pin"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.maartenvg.smartalarm.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
