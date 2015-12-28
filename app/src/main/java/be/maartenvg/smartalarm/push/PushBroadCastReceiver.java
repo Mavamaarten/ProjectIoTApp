@@ -15,7 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import be.maartenvg.smartalarm.R;
-import be.maartenvg.smartalarm.activities.MainActivity;
+import be.maartenvg.smartalarm.activities.OverviewActivity;
 
 public class PushBroadCastReceiver extends ParsePushBroadcastReceiver {
     public static String BROADCAST_ACTION = "be.maartenvg.smartalarm.SHOW_TOAST";
@@ -28,7 +28,7 @@ public class PushBroadCastReceiver extends ParsePushBroadcastReceiver {
             String title = object.getString("title");
             String alert = object.getString("alert");
 
-            if (!MainActivity.isForeground) {
+            if (!OverviewActivity.isForeground) {
 
                 android.support.v4.app.NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(context)
@@ -37,9 +37,9 @@ public class PushBroadCastReceiver extends ParsePushBroadcastReceiver {
                                 .setContentText(alert)
                                 .setAutoCancel(true);
 
-                Intent resultIntent = new Intent(context, MainActivity.class);
+                Intent resultIntent = new Intent(context, OverviewActivity.class);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addParentStack(OverviewActivity.class);
                 stackBuilder.addNextIntent(resultIntent);
                 PendingIntent resultPendingIntent =
                         stackBuilder.getPendingIntent(

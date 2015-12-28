@@ -15,4 +15,8 @@
     <string name="sensor_overview">Sensor overview</string>
     <string name="title_activity_pin">PINActivity</string>
     <string name="enter_pin_below">Please enter your PIN code below</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

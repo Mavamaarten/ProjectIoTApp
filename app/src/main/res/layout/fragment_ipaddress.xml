@@ -1,0 +1,77 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3F51B5"
+    android:orientation="vertical"
+    tools:context="be.maartenvg.smartalarm.fragments.IPAddressFragment"
+    android:id="@+id/ip_fragment">
+
+    <TextView
+        android:id="@+id/ip_title"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Connect to your SmartAlarm"
+        android:textAlignment="center"
+        android:textColor="#fff" />
+
+    <TextView
+        android:id="@+id/ip_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ip_title"
+        android:layout_marginTop="4dp"
+        android:text="Enter the IP address of your SmartAlarm below."
+        android:textAlignment="center"
+        android:textColor="#fff" />
+
+    <ImageView
+        android:id="@+id/ip_img"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_below="@id/ip_subtitle"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_find_network" />
+
+    <ImageView
+        android:id="@+id/img_connection_success"
+        android:visibility="gone"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:src="@mipmap/ic_status_armed_ok"
+        android:layout_alignBottom="@id/ip_img"
+        android:layout_alignRight="@id/ip_img"
+        android:layout_marginRight="-8dp"
+        android:layout_marginBottom="-8dp"/>
+
+    <EditText
+        android:id="@+id/edit_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/ip_img"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_toLeftOf="@+id/btn_connect"
+        android:digits="0123456789."
+        android:inputType="number|numberDecimal"
+        android:textAlignment="center"
+        android:textColor="#fff" />
+
+    <Button
+        android:id="@+id/btn_connect"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/edit_ip"
+        android:layout_marginRight="32dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Connect" />
+
+</RelativeLayout>
