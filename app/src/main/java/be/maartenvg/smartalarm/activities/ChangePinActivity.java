@@ -10,6 +10,9 @@ import com.github.paolorotolo.appintro.AppIntro2;
 import be.maartenvg.smartalarm.R;
 import be.maartenvg.smartalarm.bl.AlarmManager;
 import be.maartenvg.smartalarm.fragments.PINFragment;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class ChangePinActivity extends AppIntro2 implements PINFragment.PINFragmentListener {
     private PINFragment oldPinFragment = new PINFragment(),
@@ -43,9 +46,19 @@ public class ChangePinActivity extends AppIntro2 implements PINFragment.PINFragm
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if(sharedPreferences.contains("apiURL")){
             alarmManager = new AlarmManager(sharedPreferences.getString("apiURL", "http://127.0.0.1"));
-            alarmManager.setPIN(confirmPinFragment.getPIN());
-            Toast.makeText(this, "PIN successfully changed", Toast.LENGTH_LONG).show();
-            finish();
+            alarmManager.setPIN(confirmPinFragment.getPIN()).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Response<Void> response, Retrofit retrofit) {
+                    Toast.makeText(ChangePinActivity.this, "PIN successfully changed", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    Toast.makeText(ChangePinActivity.this, "PIN not changed: no connection", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            });
         } else {
             Toast.makeText(this, "PIN not changed: no connection", Toast.LENGTH_LONG).show();
             finish();

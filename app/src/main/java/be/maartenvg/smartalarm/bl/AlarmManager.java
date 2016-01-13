@@ -1,10 +1,12 @@
 package be.maartenvg.smartalarm.bl;
 
+import java.util.List;
+
 import be.maartenvg.smartalarm.dal.AlarmRepository;
+import be.maartenvg.smartalarm.dom.LogItem;
 import be.maartenvg.smartalarm.dom.Status;
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
-import retrofit.Response;
 import retrofit.Retrofit;
 
 public class AlarmManager {
@@ -34,4 +36,6 @@ public class AlarmManager {
     public Call<Void> disarm(String pin){ return alarmRepository.api(pin, "disarm"); }
 
     public Call<Void> setPIN(String pin) { return alarmRepository.api(pin, "setpin"); }
+
+    public Call<List<LogItem>> getLogs() { return alarmRepository.getLogs(); }
 }

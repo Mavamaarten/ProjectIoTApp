@@ -87,7 +87,7 @@ public class OverviewFragment extends Fragment {
                             intent.putExtra("action", "disarm");
                             break;
                         case DISARMED:
-                        case MENU:
+                        case SETTINGS:
                             intent.putExtra("action", "arm");
                             break;
                     }
@@ -258,7 +258,7 @@ public class OverviewFragment extends Fragment {
                 btnEnableDisable.setText(R.string.disable_alarm);
                 btnEnableDisable.setVisibility(View.VISIBLE);
                 break;
-            case MENU:
+            case SETTINGS:
                 imgStatusIcon.setImageResource(R.mipmap.ic_status_armed_ok);
                 txtTitleStatus.setText(R.string.menu);
                 txtSubtitleStatus.setText(R.string.alarm_being_setup);

@@ -21,7 +21,6 @@ import be.maartenvg.smartalarm.fragments.OverviewFragment;
 public class PushBroadCastReceiver extends ParsePushBroadcastReceiver {
     public static String BROADCAST_ACTION = "be.maartenvg.smartalarm.SHOW_TOAST";
 
-
     protected void onPushReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
         try {
