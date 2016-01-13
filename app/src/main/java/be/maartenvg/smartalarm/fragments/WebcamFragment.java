@@ -1,11 +1,15 @@
-package be.maartenvg.smartalarm.activities;
+package be.maartenvg.smartalarm.fragments;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -21,24 +25,27 @@ import be.maartenvg.smartalarm.mjpg.MjpegView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class WebcamActivity extends AppCompatActivity {
+public class WebcamFragment extends Fragment {
     private static final String TAG = "MjpegActivity";
     private SharedPreferences sharedPreferences;
 
     @Bind(R.id.mjpegview)
     MjpegView mv;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_webcam);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_webcam, container, false);
 
-        ButterKnife.bind(this);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        ButterKnife.bind(this, view);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         String streamUrl = sharedPreferences.getString("apiURL", "http://127.0.0.1");
         streamUrl += ":8081";
 
         new DoRead().execute(streamUrl);
+
+        return view;
     }
 
     public void onPause() {

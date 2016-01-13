@@ -5,7 +5,8 @@
     android:background="#2196F3"
     android:orientation="vertical"
     tools:context="be.maartenvg.smartalarm.fragments.IPAddressFragment"
-    android:id="@+id/ip_fragment">
+    android:id="@+id/ip_fragment"
+    android:paddingTop="48dp">
 
     <TextView
         android:id="@+id/pin_title"

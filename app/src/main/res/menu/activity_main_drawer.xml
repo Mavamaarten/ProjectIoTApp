@@ -5,7 +5,8 @@
         <item
             android:id="@+id/nav_status"
             android:icon="@drawable/ic_overview"
-            android:title="Status" />
+            android:title="Status"
+            android:checked="true"/>
         <item
             android:id="@+id/nav_logs"
             android:icon="@drawable/ic_list"

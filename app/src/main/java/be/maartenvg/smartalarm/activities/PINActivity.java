@@ -2,8 +2,6 @@ package be.maartenvg.smartalarm.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -44,14 +42,17 @@ public class PINActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         String action = getIntent().getStringExtra("action");
-        if(action.equals("arm"))
-        {
-            txtPinScreenTitle.setText(R.string.enable_alarm);
-            setTitle(R.string.enable_alarm);
-        }
-        else if(action.equals("disarm")) {
-            txtPinScreenTitle.setText(R.string.disable_alarm);
-            setTitle(R.string.disable_alarm);
+
+        switch(action){
+            case "arm":
+                txtPinScreenTitle.setText(R.string.enable_alarm);
+                setTitle(R.string.enable_alarm);
+                break;
+
+            case "disarm":
+                txtPinScreenTitle.setText(R.string.disable_alarm);
+                setTitle(R.string.disable_alarm);
+                break;
         }
 
         btn0.setOnClickListener(new View.OnClickListener() {

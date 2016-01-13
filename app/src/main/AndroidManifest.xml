@@ -22,18 +22,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".activities.OverviewActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<action android:name="be.maartenvg.smartalarm.SHOW_TOAST" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
 
         <service android:name="com.parse.PushService" />
 
@@ -46,6 +34,7 @@
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
+
         <receiver
             android:name="com.parse.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
@@ -57,28 +46,42 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".activities.PINActivity"
-            android:label="@string/title_activity_pin"
-            android:parentActivityName=".activities.OverviewActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".activities.SetupActivity"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.OverviewActivity" />
+                android:value="be.maartenvg.smartalarm.activities.MainActivity" />
         </activity>
-        <activity android:name=".activities.SetupActivity" />
-        <activity
-            android:name=".activities.WebcamActivity"
-            android:parentActivityName=".activities.OverviewActivity" />
-
+        <activity android:name=".activities.ChangePinActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.maartenvg.smartalarm.activities.SettingsActivity" />
+        </activity>
+        <activity android:name=".activities.PINActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.maartenvg.smartalarm.activities.MainActivity" />
+        </activity>
         <activity
             android:name=".activities.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="be.maartenvg.smartalarm.activities.MainActivity" />
         </activity>
     </application>
 

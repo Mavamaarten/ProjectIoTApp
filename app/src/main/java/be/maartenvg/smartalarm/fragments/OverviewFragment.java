@@ -1,5 +1,6 @@
-package be.maartenvg.smartalarm.activities;
+package be.maartenvg.smartalarm.fragments;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,11 +9,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import be.maartenvg.smartalarm.R;
+import be.maartenvg.smartalarm.activities.PINActivity;
+import be.maartenvg.smartalarm.activities.SetupActivity;
 import be.maartenvg.smartalarm.adapter.SensorStatusAdapter;
 import be.maartenvg.smartalarm.bl.AlarmManager;
 import be.maartenvg.smartalarm.dom.AlarmStatus;
@@ -33,7 +38,7 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class OverviewActivity extends AppCompatActivity {
+public class OverviewFragment extends Fragment {
     @Bind(R.id.icon_status)         ImageView imgStatusIcon;
     @Bind(R.id.title_status)        TextView txtTitleStatus;
     @Bind(R.id.subtitle_status)     TextView txtSubtitleStatus;
@@ -51,14 +56,12 @@ public class OverviewActivity extends AppCompatActivity {
     private Status currentStatus;
     private SharedPreferences sharedPreferences;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_overview);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_overview, container, false);
+        ButterKnife.bind(this, view);
 
-        ButterKnife.bind(this);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -75,7 +78,7 @@ public class OverviewActivity extends AppCompatActivity {
         btnEnableDisable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OverviewActivity.this, PINActivity.class);
+                Intent intent = new Intent(getActivity(), PINActivity.class);
                 if (currentStatus != null) {
                     switch (currentStatus.getStatus()) {
                         case ARMED:
@@ -89,15 +92,18 @@ public class OverviewActivity extends AppCompatActivity {
                             break;
                     }
                 }
-                startActivityForResult(intent, PINActivity.REQUEST_PIN);
+                if(intent.getStringExtra("action") != null)
+                    startActivityForResult(intent, PINActivity.REQUEST_PIN);
+                else
+                    Snackbar.make(swipeRefreshLayout, "Not connected to your alarm...", Snackbar.LENGTH_LONG).show();
             }
         });
 
-        sensorStatusAdapter = new SensorStatusAdapter(this, llSensorOverview, sensors);
+        sensorStatusAdapter = new SensorStatusAdapter(getActivity(), llSensorOverview, sensors);
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if(sharedPreferences.getBoolean("firstRun", true)){
-            Intent intent = new Intent(this, SetupActivity.class);
+            Intent intent = new Intent(getActivity(), SetupActivity.class);
             startActivityForResult(intent, SetupActivity.SETUP);
         }
 
@@ -105,27 +111,29 @@ public class OverviewActivity extends AppCompatActivity {
             alarmManager = new AlarmManager(sharedPreferences.getString("apiURL", "http://127.0.0.1"));
             onSwipeRefresh();
         }
+
+        return view;
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
+        super.onResume();
         IntentFilter filter = new IntentFilter();
         filter.addAction(PushBroadCastReceiver.BROADCAST_ACTION);
-        registerReceiver(receiver, filter);
+        getActivity().registerReceiver(receiver, filter);
         isForeground = true;
-        super.onResume();
     }
 
     @Override
-    protected void onPause(){
+    public void onPause(){
         super.onPause();
-        unregisterReceiver(receiver);
+        getActivity().unregisterReceiver(receiver);
         isForeground = false;
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode != RESULT_OK) return;
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode != Activity.RESULT_OK) return;
 
         switch(requestCode){
             case PINActivity.REQUEST_PIN:
@@ -179,6 +187,10 @@ public class OverviewActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
+                setStatus(AlarmStatus.NOT_CONNECTED);
+                sensors.clear();
+                sensors.put("Error communicating with alarm", true);
+                sensorStatusAdapter.notifyDataSetChanged();
                 Snackbar.make(swipeRefreshLayout, "Error communicating with alarm", Snackbar.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -190,7 +202,7 @@ public class OverviewActivity extends AppCompatActivity {
             String title = bundle.getString("title");
             String alert = bundle.getString("alert");
             Snackbar.make(swipeRefreshLayout, title, Snackbar.LENGTH_LONG).show();
-            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
             v.vibrate(150);
         } catch (Exception e) {
             e.printStackTrace();
@@ -220,6 +232,7 @@ public class OverviewActivity extends AppCompatActivity {
                 txtSubtitleStatus.setText(R.string.sensors_ok);
                 btn911.setVisibility(View.GONE);
                 btnEnableDisable.setText(R.string.disable_alarm);
+                btnEnableDisable.setVisibility(View.VISIBLE);
                 break;
             case DISARMED:
                 imgStatusIcon.setImageResource(R.mipmap.ic_status_disarmed_ok);
@@ -227,6 +240,7 @@ public class OverviewActivity extends AppCompatActivity {
                 txtSubtitleStatus.setText(R.string.sensors_ok);
                 btn911.setVisibility(View.GONE);
                 btnEnableDisable.setText(R.string.enable_alarm);
+                btnEnableDisable.setVisibility(View.VISIBLE);
                 break;
             case COUNTDOWN:
                 imgStatusIcon.setImageResource(R.mipmap.ic_status_armed_alert);
@@ -234,6 +248,7 @@ public class OverviewActivity extends AppCompatActivity {
                 txtSubtitleStatus.setText(R.string.countdown_initiated);
                 btn911.setVisibility(View.VISIBLE);
                 btnEnableDisable.setText(R.string.disable_alarm);
+                btnEnableDisable.setVisibility(View.VISIBLE);
                 break;
             case SIRENS_ON:
                 imgStatusIcon.setImageResource(R.mipmap.ic_status_armed_alert);
@@ -241,6 +256,7 @@ public class OverviewActivity extends AppCompatActivity {
                 txtSubtitleStatus.setText(R.string.sirens_active);
                 btn911.setVisibility(View.VISIBLE);
                 btnEnableDisable.setText(R.string.disable_alarm);
+                btnEnableDisable.setVisibility(View.VISIBLE);
                 break;
             case MENU:
                 imgStatusIcon.setImageResource(R.mipmap.ic_status_armed_ok);
@@ -248,6 +264,15 @@ public class OverviewActivity extends AppCompatActivity {
                 txtSubtitleStatus.setText(R.string.alarm_being_setup);
                 btn911.setVisibility(View.GONE);
                 btnEnableDisable.setText(R.string.enable_alarm);
+                btnEnableDisable.setVisibility(View.VISIBLE);
+                break;
+            case NOT_CONNECTED:
+                imgStatusIcon.setImageResource(R.mipmap.ic_status_disarmed_alert);
+                txtTitleStatus.setText(R.string.status_unknown);
+                txtSubtitleStatus.setText(R.string.error_communicating);
+                btn911.setVisibility(View.GONE);
+                btnEnableDisable.setText(R.string.enable_alarm);
+                btnEnableDisable.setVisibility(View.GONE);
                 break;
         }
     }

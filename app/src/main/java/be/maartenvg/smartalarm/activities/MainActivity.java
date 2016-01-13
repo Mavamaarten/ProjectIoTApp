@@ -1,10 +1,9 @@
 package be.maartenvg.smartalarm.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.view.View;
+import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,18 +12,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import be.maartenvg.smartalarm.R;
+import be.maartenvg.smartalarm.fragments.LogsFragment;
+import be.maartenvg.smartalarm.fragments.OverviewFragment;
+import be.maartenvg.smartalarm.fragments.WebcamFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    @Bind(R.id.flContent) FrameLayout flContent;
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.drawer_layout) DrawerLayout drawer;
     @Bind(R.id.nav_view) NavigationView navigationView;
+
+    OverviewFragment overviewFragment;
+    LogsFragment logsFragment;
+    WebcamFragment webcamFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +37,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        setTitle("Status");
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        overviewFragment = new OverviewFragment();
+        logsFragment = new LogsFragment();
+        webcamFragment = new WebcamFragment();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, overviewFragment).commit();
     }
 
     @Override
@@ -52,19 +63,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -75,18 +81,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        Fragment fragment;
+        Fragment fragment = null;
 
         switch(id){
-            case R.id.nav_status:
-            case R.id.nav_logs:
-            case R.id.nav_camera:
+            case R.id.nav_status: fragment = overviewFragment; break;
+            case R.id.nav_logs: fragment = logsFragment; break;
+            case R.id.nav_camera: fragment = webcamFragment; break;
             case R.id.nav_settings:
+                Intent intent = new Intent(getApplication(), SettingsActivity.class);
+                startActivity(intent);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+            item.setChecked(true);
+            setTitle(item.getTitle());
+        }
+
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return id != R.id.nav_settings; // Make sure the "settings" item doesn't get checked
     }
 }

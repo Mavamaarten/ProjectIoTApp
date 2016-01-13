@@ -33,9 +33,21 @@ public class PINFragment extends Fragment {
     @Bind(R.id.btn9) TextView btn9;
     @Bind(R.id.btnBackspace) ImageView btnBackspace;
     @Bind(R.id.edit_pin) EditText editPIN;
+    @Bind(R.id.pin_title) TextView fragmentTitle;
+    @Bind(R.id.pin_subtitle) TextView fragmentSubtitle;
+
+    private String fragmentTitleString, fragmentSubtitleString;
 
     public void setListener(PINFragmentListener listener) {
         this.listener = listener;
+    }
+
+    public void setFragmentTitle(String title){
+        fragmentTitleString = title;
+    }
+
+    public void setFragmentSubtitle(String subTitle){
+        fragmentSubtitleString = subTitle;
     }
 
     @Override
@@ -48,6 +60,9 @@ public class PINFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pin, container, false);
         ButterKnife.bind(this, view);
+
+        if(fragmentTitleString != null) fragmentTitle.setText(fragmentTitleString);
+        if(fragmentSubtitleString != null) fragmentSubtitle.setText(fragmentSubtitleString);
 
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,11 +153,11 @@ public class PINFragment extends Fragment {
                     listener.onPINNotOk();
             }
         });
-
         return view;
     }
 
     public String getPIN(){
+        if(editPIN == null) return null;
         return editPIN.getText().toString();
     }
 
